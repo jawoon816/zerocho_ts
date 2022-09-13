@@ -94,3 +94,51 @@ function run(dir: Direction) {}
 
 walk(Edirection.Left);
 run(Odirection.Right);
+
+type A = { a: string };
+const x: A = { a: "hello" };
+// const x: { a: string } = { a: "hello" };로 적어도 된다.
+
+interface B {
+  a: string;
+}
+const y: B = { a: "hello" };
+//간단하게 하고 싶으면 type사용, interface는 상속받고 implement 구현하고 객체지향 내용이 포함되어 있다.
+//객체지향 프로그래밍을 하고 싶다면 interface 사용
+
+function added(x: string | number, y: string | number): string | number {
+  return `${x}+${y}`;
+} //|:union=>type 추론이 제대로 안된다. typescript는 모든 경우의 수를 고려하는데
+//return 값이 string|number인게 말이 안됨..
+added(1, 2);
+added("1", "2");
+added(1, "2");
+
+type AA = { hello: "world" } & { zero: "cho" };
+//&(intersection)는 둘 다 만족. 둘 중 하나가 없으면 err=>모든 속성이 다 있어야 한다.
+// |는 하나의 속성만 있으면 된다.
+const aA: AA = { hello: "world", zero: "cho" };
+
+type Animal = { breath: true };
+type Poypuryu = Animal & { breed: true };
+type Human = Poypuryu & { think: true };
+
+interface Aaaa {
+  breath: true;
+}
+interface Ba extends Aaaa {
+  //상속(&이랑 비슷한 맥락)
+  //interface가 type을 extends할 수도 있다.(반대도 가능)
+  breed: true;
+}
+//interface는 같은 이름으로 여러번 선언 가능하다=>선언 할 때마다 합쳐짐
+//interface 확장 가능하다.(다른 라이브러리 코드 수정 가능함)
+const br: Ba = { breath: true, breed: true };
+
+const zeroch: Human = { breath: true, breed: true, think: true };
+
+// interface I
+// type T
+// enum E
+//이런 식으로 붙일 수 있고 안붙일 수가 있는데 요즘 국룰은 안붙이는거...!에디터로 다 알 수 있음 굳이 안붙임(타입의 의미가 없다)
+//제네릭에만 붙이고 실제 네이밍에는 안붙이는 추세
